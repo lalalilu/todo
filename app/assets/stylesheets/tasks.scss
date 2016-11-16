@@ -381,3 +381,10 @@ html .clear-completed:active {
   color: rgba(234, 69, 109, 1);
   text-decoration: none;
 }
+
+.todo-list .del {
+	float: right;
+	margin-top: 18px;
+	margin-right: 10px;
+	cursor: pointer;
+}

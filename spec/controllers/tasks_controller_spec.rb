@@ -35,4 +35,14 @@ RSpec.describe TasksController, type: :controller do
     end
   end
 
+  describe "tasks#destroy" do
+    it "should delete tasks after clicking the x button" do
+      task = FactoryGirl.create(:task)
+      delete :destroy, id: task.id
+      expect(response).to have_http_status :success
+      task = Task.find_by_id(task.id)
+      expect(task).to eq(nil)
+    end
+  end
+
 end
