@@ -10,7 +10,7 @@ $(function() {
     '<div class="view"><input class="toggle" type="checkbox"' +
     ' data-id="' + task.id + '"' +
     checkedStatus +
-    '><label>' +
+    '><span class="del" data-id="' + task.id + '">&times</span><label>' +
     task.title +
     '</label></div></li>';
 
@@ -23,7 +23,6 @@ $(function() {
   // the value of the 'done' field
   function toggleTask(e) {
     var itemId = $(e.target).data("id");
-
     var doneValue = Boolean($(e.target).is(':checked'));
 
     $.post("/tasks/" + itemId, {
@@ -39,6 +38,16 @@ $(function() {
     });
   }
 
+  function removeTask(e) {
+    var itemId = $(e.target).data("id");
+    $.ajax('/tasks/' + itemId, {
+      type: "DELETE"
+    }).success(function(data) {
+        var $li = $('#listItem-' + itemId);
+        $li.remove();
+    });
+  }
+
   $.get("/tasks").success( function( data ) {
     var htmlString = "";
     $.each(data, function(index,  task) {
@@ -48,6 +57,7 @@ $(function() {
     ulTodos.html(htmlString);
 
     $('.toggle').change(toggleTask);
+    $('.del').click(removeTask);
   });
 
   $('#new-form').submit(function(event) {
